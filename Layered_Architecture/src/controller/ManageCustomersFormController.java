@@ -2,6 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import dao.CustomerDAO;
 import dao.CustomerDAOImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -40,6 +41,9 @@ public class ManageCustomersFormController {
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
 
+    //DI (Property Injection)
+    CustomerDAO customerDAO = new CustomerDAOImpl();
+
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
         tblCustomers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -71,7 +75,6 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         try {
             /*Get all customers*/
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
             ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
             for (CustomerDTO c : allCustomers) {
                 tblCustomers.getItems().add(new CustomerTM(c.getId(), c.getName(), c.getAddress()));
@@ -144,9 +147,7 @@ public class ManageCustomersFormController {
                 }
 
                 //Add Customer
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
                 customerDAO.addCustomer(new CustomerDTO(id,name,address));
-
 
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));
             } catch (SQLException e) {
@@ -164,7 +165,6 @@ public class ManageCustomersFormController {
                 }
 
                 //Update Customer
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
                 customerDAO.updateCustomer(new CustomerDTO(id,name,address));
 
             } catch (SQLException e) {
@@ -184,7 +184,6 @@ public class ManageCustomersFormController {
 
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        CustomerDAOImpl customerDAO = new CustomerDAOImpl();
        return customerDAO.existCustomer(id);
     }
 
@@ -198,7 +197,6 @@ public class ManageCustomersFormController {
             }
 
             //Delete Customer
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
             customerDAO.deleteCustomer(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -215,7 +213,6 @@ public class ManageCustomersFormController {
     private String generateNewId() {
         try {
             //Generate New ID
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
             return customerDAO.generateNewID();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
