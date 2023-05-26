@@ -1,5 +1,6 @@
-package bo;
+package custom.impl;
 
+import bo.custom.PurchaseOrderBO;
 import dao.custom.CustomerDAO;
 import dao.custom.ItemDAO;
 import dao.custom.OrderDAO;
@@ -20,45 +21,53 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseOrderBOImpl {
+public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
+    @Override
     public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException {
         CustomerDAO customerDAO = new CustomerDAOImpl();
         return customerDAO.search(id);
     }
 
 
+    @Override
     public ItemDTO searchItem(String code) throws SQLException, ClassNotFoundException {
         ItemDAO itemDAO = new ItemDAOImpl();
         return itemDAO.search(code);
     }
 
+    @Override
     public boolean existItem(String code) throws SQLException, ClassNotFoundException {
         ItemDAO itemDAO = new ItemDAOImpl();
         return itemDAO.exist(code);
     }
 
+    @Override
     public boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
         CustomerDAO customerDAO = new CustomerDAOImpl();
         return customerDAO.exist(id);
     }
 
+    @Override
     public String generateOrderID() throws SQLException, ClassNotFoundException {
         OrderDAO orderDAO = new OrderDAOImpl();
         return orderDAO.generateNewID();
     }
 
+    @Override
     public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
         CustomerDAO customerDAO = new CustomerDAOImpl();
        return customerDAO.getAll();
     }
 
+    @Override
     public ArrayList<ItemDTO> getAllItems() throws SQLException, ClassNotFoundException {
         ItemDAO itemDAO = new ItemDAOImpl();
         return itemDAO.getAll();
     }
 
 
+    @Override
     public boolean purchaseOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails){
         /*Transaction*/
         Connection connection = null;
@@ -117,7 +126,7 @@ public class PurchaseOrderBOImpl {
         return false;
     }
 
-
+    @Override
     public ItemDTO findItem(String code) {
         try {
             PurchaseOrderBOImpl purchaseOrderBO = new PurchaseOrderBOImpl();
