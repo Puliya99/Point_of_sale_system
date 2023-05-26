@@ -1,4 +1,6 @@
-package dao;
+package dao.dao.custom.impl;
+
+import dao.custom.QueryDAO;
 
 public class QueryDAOImpl implements QueryDAO {
     @Override
