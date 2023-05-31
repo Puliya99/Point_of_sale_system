@@ -2,6 +2,7 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author : Sanu Vithanage
@@ -14,6 +15,7 @@ public class OrderDTO {
     private String customerId;
     private String customerName;
     private BigDecimal orderTotal;
+    List<OrderDetailDTO> orderDetails;
 
     public OrderDTO() {
     }
@@ -70,6 +72,14 @@ public class OrderDTO {
 
     public void setOrderTotal(BigDecimal orderTotal) {
         this.orderTotal = orderTotal;
+    }
+
+    public List<OrderDetailDTO> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailDTO> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     @Override

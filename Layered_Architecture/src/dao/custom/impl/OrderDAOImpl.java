@@ -2,7 +2,7 @@ package dao.custom.impl;
 
 import dao.SQLUtil;
 import dao.custom.OrderDAO;
-import model.OrderDTO;
+import entity.Orders;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -12,18 +12,18 @@ import java.util.ArrayList;
 public class OrderDAOImpl implements OrderDAO {
 
     @Override
-    public ArrayList<OrderDTO> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+    public ArrayList<Orders> getAll() throws SQLException, ClassNotFoundException {
+        throw new UnsupportedOperationException("This Feature is not implemented yet");
     }
 
     @Override
-    public boolean add(OrderDTO dto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",dto.getOrderId(),Date.valueOf(dto.getOrderDate()),dto.getCustomerId());
+    public boolean add(Orders entity) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",entity.getOid(),Date.valueOf(entity.getDate()),entity.getCustomerID());
     }
 
     @Override
-    public boolean update(OrderDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean update(Orders entity) throws SQLException, ClassNotFoundException {
+        throw new UnsupportedOperationException("This Feature is not implemented yet");
     }
 
     @Override
@@ -40,11 +40,11 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return false;
+        throw new UnsupportedOperationException("This Feature is not implemented yet");
     }
 
     @Override
-    public OrderDTO search(String id) throws SQLException, ClassNotFoundException {
-        return null;
+    public Orders search(String id) throws SQLException, ClassNotFoundException {
+        throw new UnsupportedOperationException("This Feature is not implemented yet");
     }
 }

@@ -1,8 +1,12 @@
 package bo;
 
+import bo.custom.CustomerBO;
+import bo.custom.ItemBO;
+import bo.custom.PurchaseOrderBO;
 import bo.custom.impl.CustomerBOImpl;
 import bo.custom.impl.ItemBOImpl;
 import bo.custom.impl.PurchaseOrderBOImpl;
+import db.DBConnection;
 
 public class BOFactory {
     private static BOFactory boFactory;

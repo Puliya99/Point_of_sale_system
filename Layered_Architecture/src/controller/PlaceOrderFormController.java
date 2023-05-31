@@ -1,7 +1,9 @@
 package controller;
 
 import bo.BOFactory;
+import bo.SuperBO;
 import bo.custom.PurchaseOrderBO;
+import bo.custom.impl.PurchaseOrderBOImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -19,13 +21,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.CustomerDTO;
 import model.ItemDTO;
+import model.OrderDTO;
 import model.OrderDetailDTO;
 import view.tdm.OrderDetailTM;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -291,14 +294,22 @@ public class PlaceOrderFormController {
     }
 
     public void btnPlaceOrder_OnAction(ActionEvent actionEvent) {
-        boolean b = saveOrder(orderId, LocalDate.now(), cmbCustomerId.getValue(),
-                tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(orderId, tm.getCode(), tm.getQty(), tm.getUnitPrice())).collect(Collectors.toList()));
+        try {
+            boolean b = saveOrder(orderId, LocalDate.now(), cmbCustomerId.getValue(),
+                    tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(orderId, tm.getCode(), tm.getQty(), tm.getUnitPrice())).collect(Collectors.toList()));
 
-        if (b) {
-            new Alert(Alert.AlertType.INFORMATION, "Order has been placed successfully").show();
-        } else {
-            new Alert(Alert.AlertType.ERROR, "Order has not been placed successfully").show();
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "Order has been placed successfully").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Order has not been placed successfully").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+
+
 
         orderId = generateNewOrderId();
         lblId.setText("Order Id: " + orderId);
@@ -309,8 +320,9 @@ public class PlaceOrderFormController {
         calculateTotal();
     }
 
-    public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
-        return purchaseOrderBO.purchaseOrder(orderId, orderDate, customerId, orderDetails);
+    public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
+        OrderDTO orderDTO = new OrderDTO(orderId, orderDate, customerId, orderDetails);
+        return purchaseOrderBO.purchaseOrder(orderDTO);
     }
 
 
